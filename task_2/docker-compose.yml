@@ -1,0 +1,22 @@
+version: "3"
+services:
+  db:
+    image: mysql
+    restart: always
+    environment:
+      MYSQL_ROOL_USER: root
+      MYSQL_ROOT_PASSWORD: example
+    volumes:
+      - ./db:/docker-entrypoint-initdb.d:ro
+      - db_volume:/var/lib/mysql
+  server:
+    build: ./server
+    restart: always
+    ports:
+      - 80:80
+    volumes:
+      - ./server:/var/www/html
+    links:
+      - db
+volumes:
+  db_volume:
